@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores principales de la app -->
+    <color name="primary">#2196F3</color>
+    <color name="primary_light">#E3F2FD</color>
+    <color name="accent">#FF5722</color>
+    <color name="white">#FFFFFF</color>
+    <color name="background">#F5F5F5</color>
+    <color name="background_light">#FAFAFA</color>
+
+    <!-- Colores de la barra superior -->
+    <color name="header_bg">#2196F3</color>
+    <color name="header_title">#FFFFFF</color>
+    <color name="header_subtitle">#E3F2FD</color>
+
+    <!-- Colores del botón de reinicio -->
+    <color name="btn_reiniciar">#FF5722</color>
+    <color name="btn_reiniciar_text">#FFFFFF</color>
+
+    <!-- Colores de los botones del tablero -->
+    <color name="casilla_cubierta">#607D8B</color>
+    <color name="casilla_vacia">#E8EAF6</color>
+    <color name="casilla_numero">#FFFFFF</color>
+    <color name="casilla_mina">#F44336</color>
+    <color name="casilla_mina_revelada">#FFCDD2</color>
+
+    <!-- Colores de los números (1-8) -->
+    <color name="numero_1">#1565C0</color>
+    <color name="numero_2">#2E7D32</color>
+    <color name="numero_3">#C62828</color>
+    <color name="numero_4">#4A148C</color>
+    <color name="numero_5">#BF360C</color>
+    <color name="numero_6">#006064</color>
+    <color name="numero_7">#212121</color>
+    <color name="numero_8">#546E7A</color>
+
+    <!-- Colores de estado del juego -->
+    <color name="estado_jugando">#E3F2FD</color>
+    <color name="estado_perdio">#FFCDD2</color>
+    <color name="estado_gano">#C8E6C9</color>
+</resources>
