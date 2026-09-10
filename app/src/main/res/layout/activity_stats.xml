@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <!-- Barra superior -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/header_bg"
+        android:elevation="4dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📊 Estadísticas"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/header_title"
+            android:gravity="center"
+            android:paddingBottom="8dp"/>
+
+    </LinearLayout>
+
+    <!-- Scroll del contenido -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Panel de estadísticas -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tvTotalPartidas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Total Partidas: 0"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/header_bg"
+                    android:paddingBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/tvVictorias"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Victorias: 0"
+                    android:textSize="16sp"
+                    android:textColor="@color/numero_2"
+                    android:paddingBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/tvDerrotas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Derrotas: 0"
+                    android:textSize="16sp"
+                    android:textColor="@color/numero_3"
+                    android:paddingBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/tvWinRate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tasa de Victoria: 0%"
+                    android:textSize="16sp"
+                    android:textColor="@color/header_bg"
+                    android:paddingBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/tvMejorTiempo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mejor Tiempo: N/A"
+                    android:textSize="16sp"
+                    android:textColor="@color/header_bg"
+                    android:paddingBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/tvTiempoTotal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tiempo Total: N/A"
+                    android:textSize="16sp"
+                    android:textColor="@color/header_bg"/>
+
+            </LinearLayout>
+
+            <!-- Historial -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Historial de Partidas"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/header_bg"
+                android:paddingBottom="12dp"/>
+
+            <LinearLayout
+                android:id="@+id/containerHistorial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:elevation="2dp"
+                android:padding="8dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

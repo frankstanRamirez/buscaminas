@@ -58,15 +58,46 @@
 
         <Button
             android:id="@+id/btnReiniciar"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="48dp"
+            android:layout_weight="1"
             android:text=" Nueva Partida"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:textColor="@color/btn_reiniciar_text"
             android:textAllCaps="false"
             android:background="@drawable/boton_reiniciar"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:elevation="2dp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnLogros"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="🏆 Logros"
+            android:textSize="12sp"
+            android:textColor="@color/btn_reiniciar_text"
+            android:textAllCaps="false"
+            android:background="@drawable/boton_reiniciar"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:elevation="2dp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnEstadisticas"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="📊 Stats"
+            android:textSize="12sp"
+            android:textColor="@color/btn_reiniciar_text"
+            android:textAllCaps="false"
+            android:background="@drawable/boton_reiniciar"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:elevation="2dp"/>
 
     </LinearLayout>
@@ -97,12 +128,19 @@
                     app:cardElevation="8dp"
                     app:cardBackgroundColor="@color/white">
 
-                    <GridLayout
-                        android:id="@+id/gridTablero"
+                    <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:background="@color/white"/>
+                        android:background="@color/white">
+
+                        <GridLayout
+                            android:id="@+id/gridTablero"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"/>
+
+                    </FrameLayout>
 
                 </androidx.cardview.widget.CardView>
 
