@@ -192,6 +192,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (casilla.isDescubierta()) return;
 
+        Button btn = botones[fila][col];
+        AnimationUtils.clickAnimation(btn);
+
         if (casilla.isTieneMina()) {
             casilla.setDescubierta(true);
             actualizarBoton(fila, col);
@@ -205,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
             revelarTodasLasMinas();
             soundManager.playLose();
+            AnimationUtils.shakeAnimation(gridTablero);
             
             // Registrar derrota
             gameStatistics.registrarDerrota(tiempoElapsado);
@@ -233,6 +237,8 @@ public class MainActivity extends AppCompatActivity {
                 tvEstado.setText("🎉 ¡Ganaste!");
                 tvEstado.setTextColor(getColor(R.color.estado_gano));
                 soundManager.playWin();
+                AnimationUtils.celebrateAnimation(tvEstado);
+                AnimationUtils.pulseAnimation(gridTablero);
                 
                 // Registrar victoria
                 gameStatistics.registrarVictoria(tiempoElapsado);
