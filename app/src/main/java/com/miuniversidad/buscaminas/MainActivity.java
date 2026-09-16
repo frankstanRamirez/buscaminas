@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private SoundManager soundManager;
     private Leaderboard leaderboard;
     private GameDifficulty currentDifficulty;
+    private ScoreSystem scoreSystem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
     private void iniciarJuego() {
         tablero = new Tablero(FILAS, COLUMNAS, TOTAL_MINAS);
         botones = new Button[FILAS][COLUMNAS];
+        scoreSystem = new ScoreSystem();
         juegoTerminado = false;
         tiempoElapsado = 0;
         tiempoInicio = System.currentTimeMillis();
@@ -223,6 +225,10 @@ public class MainActivity extends AppCompatActivity {
             // Sonido de click
             soundManager.playClick();
             
+            // Agregar puntos
+            int points = scoreSystem.addSafeClick(casilla.getMinasAdyacentes());
+            mostrarMensajePuntos(points);
+            
             // aplicar flood fill desde esta casilla
             tablero.revelarCasilla(fila, col);
 
@@ -249,7 +255,8 @@ public class MainActivity extends AppCompatActivity {
                 
                 // Agregar al leaderboard
                 String playerName = appPreferences.getPlayerName();
-                leaderboard.addEntry(playerName, tiempoElapsado, currentDifficulty, 100);
+                int finalScore = scoreSystem.getTotalScore() + scoreSystem.victoryBonus(tiempoElapsado);
+                leaderboard.addEntry(playerName, tiempoElapsado, currentDifficulty, finalScore);
                 dataManager.saveLeaderboard(leaderboard);
                 
                 achievementManager.checkAchievementsForGameEnd(true, tiempoElapsado, 
@@ -305,6 +312,19 @@ public class MainActivity extends AppCompatActivity {
         gameState.setJuegoTerminado(juegoTerminado);
         
         dataManager.saveGameState(gameState);
+    }
+
+    /**
+     * Muestra un mensaje flotante de puntos ganados
+     */
+    private void mostrarMensajePuntos(int puntos) {
+        // Este método se puede mejorar con un Toast o un TextVi flotante
+        // Por ahora es un placeholder
+        String comboMsg = scoreSystem.getComboMessage();
+        if (!comboMsg.isEmpty()) {
+            // Mostrar en log para debugging
+            android.util.Log.d("Buscaminas", comboMsg + " - +" + puntos + " puntos");
+        }
     }
 
     private void abrirLogros() {
