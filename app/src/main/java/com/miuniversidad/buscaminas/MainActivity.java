@@ -31,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
     private DataManager dataManager;
     private AchievementManager achievementManager;
     private GameStatistics gameStatistics;
+    private AppPreferences appPreferences;
+    private SoundManager soundManager;
+    private Leaderboard leaderboard;
+    private GameDifficulty currentDifficulty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +48,21 @@ public class MainActivity extends AppCompatActivity {
         Button btnReiniciar = findViewById(R.id.btnReiniciar);
         Button btnLogros = findViewById(R.id.btnLogros);
         Button btnEstadisticas = findViewById(R.id.btnEstadisticas);
+        Button btnLeaderboard = findViewById(R.id.btnLeaderboard);
 
         // Inicializar managers
         dataManager = new DataManager(this);
+        appPreferences = new AppPreferences(this);
+        soundManager = new SoundManager(this);
         achievementManager = new AchievementManager(dataManager);
         gameStatistics = dataManager.loadStatistics();
+        leaderboard = dataManager.loadLeaderboard();
+        currentDifficulty = appPreferences.getDifficulty();
 
         btnReiniciar.setOnClickListener(v -> iniciarJuego());
         btnLogros.setOnClickListener(v -> abrirLogros());
         btnEstadisticas.setOnClickListener(v -> abrirEstadisticas());
+        btnLeaderboard.setOnClickListener(v -> abrirLeaderboard());
 
         // Verificar si hay partida guardada
         if (dataManager.hasSavedGame()) {
@@ -162,6 +172,10 @@ public class MainActivity extends AppCompatActivity {
         final int fila = f;
         final int col = c;
         btn.setOnClickListener(v -> alPresionarCasilla(fila, col));
+        btn.setOnLongClickListener(v -> {
+            alPresionarLargo(fila, col);
+            return true;
+        });
 
         botones[f][c] = btn;
         gridTablero.addView(btn);
@@ -188,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
             tvEstado.setTextColor(getColor(R.color.estado_perdio));
 
             revelarTodasLasMinas();
+            soundManager.playLose();
             
             // Registrar derrota
             gameStatistics.registrarDerrota(tiempoElapsado);
@@ -199,6 +214,9 @@ public class MainActivity extends AppCompatActivity {
             dataManager.clearSavedGame();
 
         } else {
+            // Sonido de click
+            soundManager.playClick();
+            
             // aplicar flood fill desde esta casilla
             tablero.revelarCasilla(fila, col);
 
@@ -212,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
                 
                 tvEstado.setText("🎉 ¡Ganaste!");
                 tvEstado.setTextColor(getColor(R.color.estado_gano));
+                soundManager.playWin();
                 
                 // Registrar victoria
                 gameStatistics.registrarVictoria(tiempoElapsado);
@@ -219,6 +238,12 @@ public class MainActivity extends AppCompatActivity {
                     tiempoElapsado, true, 0, FILAS * COLUMNAS - TOTAL_MINAS);
                 gameStatistics.agregarAlHistorial(score);
                 dataManager.saveStatistics(gameStatistics);
+                
+                // Agregar al leaderboard
+                String playerName = appPreferences.getPlayerName();
+                leaderboard.addEntry(playerName, tiempoElapsado, currentDifficulty, 100);
+                dataManager.saveLeaderboard(leaderboard);
+                
                 achievementManager.checkAchievementsForGameEnd(true, tiempoElapsado, 
                     gameStatistics.getTotalPartidas(), gameStatistics.getPartidosGanadas(), gameStatistics);
                 
@@ -228,6 +253,30 @@ public class MainActivity extends AppCompatActivity {
                 // Guardar estado actual
                 guardarPartida();
             }
+        }
+    }
+
+    /**
+     * Maneja el click largo (long press) para marcar/desmarcar banderas
+     */
+    private void alPresionarLargo(int fila, int col) {
+        if (juegoTerminado) return;
+
+        Casilla casilla = tablero.getCasilla(fila, col);
+
+        // Solo puedes marcar casillas no descubiertas
+        if (casilla.isDescubierta()) return;
+
+        casilla.toggleMarcada();
+        soundManager.playFlag();
+        
+        Button btn = botones[fila][col];
+        if (casilla.isMarcada()) {
+            btn.setText("🚩");
+            btn.setTextSize(18f);
+        } else {
+            btn.setText("");
+            btn.setTextSize(14f);
         }
     }
 
@@ -257,6 +306,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void abrirEstadisticas() {
         Intent intent = new Intent(this, StatsActivity.class);
+        startActivity(intent);
+    }
+
+    private void abrirLeaderboard() {
+        Intent intent = new Intent(this, LeaderboardActivity.class);
         startActivity(intent);
     }
 
@@ -339,5 +393,13 @@ public class MainActivity extends AppCompatActivity {
     private int dpAPx(int dp) {
         float density = getResources().getDisplayMetrics().density;
         return Math.round(dp * density);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (soundManager != null) {
+            soundManager.release();
+        }
     }
 }

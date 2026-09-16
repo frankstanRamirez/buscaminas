@@ -19,6 +19,7 @@ public class DataManager {
     private static final String KEY_SAVED_GAME = "saved_game_state";
     private static final String KEY_ACHIEVEMENTS = "achievements";
     private static final String KEY_STATISTICS = "statistics";
+    private static final String KEY_LEADERBOARD = "leaderboard";
 
     private SharedPreferences prefs;
     private Gson gson;
@@ -119,5 +120,29 @@ public class DataManager {
      */
     public void clearAllData() {
         prefs.edit().clear().apply();
+    }
+
+    /**
+     * Guarda el leaderboard
+     */
+    public void saveLeaderboard(Leaderboard leaderboard) {
+        String json = gson.toJson(leaderboard);
+        prefs.edit().putString(KEY_LEADERBOARD, json).apply();
+    }
+
+    /**
+     * Carga el leaderboard
+     */
+    public Leaderboard loadLeaderboard() {
+        String json = prefs.getString(KEY_LEADERBOARD, null);
+        if (json == null) {
+            return new Leaderboard();
+        }
+        try {
+            return gson.fromJson(json, Leaderboard.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Leaderboard();
+        }
     }
 }

@@ -98,6 +98,21 @@
             android:background="@drawable/boton_reiniciar"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
+            android:elevation="2dp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnLeaderboard"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="🏅 Top 10"
+            android:textSize="12sp"
+            android:textColor="@color/btn_reiniciar_text"
+            android:textAllCaps="false"
+            android:background="@drawable/boton_reiniciar"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:elevation="2dp"/>
 
     </LinearLayout>

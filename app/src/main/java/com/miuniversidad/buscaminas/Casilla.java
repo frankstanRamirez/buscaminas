@@ -38,6 +38,10 @@ public class Casilla {
         this.marcada = !this.marcada;
     }
 
+    public void setMarcada(boolean marcada) {
+        this.marcada = marcada;
+    }
+
     public int getMinasAdyacentes() {
         return minasAdyacentes;
     }
