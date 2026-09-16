@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnLogros = findViewById(R.id.btnLogros);
         Button btnEstadisticas = findViewById(R.id.btnEstadisticas);
         Button btnLeaderboard = findViewById(R.id.btnLeaderboard);
+        Button btnConfiguracion = findViewById(R.id.btnConfiguracion);
 
         // Inicializar managers
         dataManager = new DataManager(this);
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogros.setOnClickListener(v -> abrirLogros());
         btnEstadisticas.setOnClickListener(v -> abrirEstadisticas());
         btnLeaderboard.setOnClickListener(v -> abrirLeaderboard());
+        btnConfiguracion.setOnClickListener(v -> abrirConfiguracion());
 
         // Verificar si hay partida guardada
         if (dataManager.hasSavedGame()) {
@@ -311,6 +313,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void abrirLeaderboard() {
         Intent intent = new Intent(this, LeaderboardActivity.class);
+        startActivity(intent);
+    }
+
+    private void abrirConfiguracion() {
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 

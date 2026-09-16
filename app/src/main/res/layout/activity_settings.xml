@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <!-- Barra superior -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/header_bg"
+        android:elevation="4dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="⚙️ Configuración"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/header_title"
+            android:gravity="center"
+            android:paddingBottom="8dp"/>
+
+    </LinearLayout>
+
+    <!-- Contenedor de configuración -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Nombre del jugador -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:elevation="2dp"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="👤 Nombre del Jugador"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/header_bg"
+                    android:paddingBottom="8dp"/>
+
+                <EditText
+                    android:id="@+id/etPlayerName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Escribe tu nombre"
+                    android:textSize="14sp"
+                    android:padding="8dp"
+                    android:background="@color/background_light"
+                    android:textColor="@color/header_bg"
+                    android:inputType="text"/>
+
+            </LinearLayout>
+
+            <!-- Tema -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:elevation="2dp"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvThemeLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="☀️ Tema: Claro"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/header_bg"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Selecciona tema claro u oscuro"
+                            android:textSize="12sp"
+                            android:textColor="@color/header_subtitle"
+                            android:paddingTop="4dp"/>
+
+                    </LinearLayout>
+
+                    <Switch
+                        android:id="@+id/swTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Sonidos -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:elevation="2dp"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="🔊 Sonidos"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/header_bg"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Efectos de sonido del juego"
+                            android:textSize="12sp"
+                            android:textColor="@color/header_subtitle"
+                            android:paddingTop="4dp"/>
+
+                    </LinearLayout>
+
+                    <Switch
+                        android:id="@+id/swSound"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Info -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:elevation="2dp"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ℹ️ Información"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/header_bg"
+                    android:paddingBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Buscaminas v3.0\nJuego de estrategia y lógica\n\nClick: Revelar casilla\nClick largo: Marcar bandera"
+                    android:textSize="12sp"
+                    android:textColor="@color/header_subtitle"
+                    android:lineSpacingExtra="4dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

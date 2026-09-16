@@ -38,4 +38,9 @@
     <color name="estado_jugando">#E3F2FD</color>
     <color name="estado_perdio">#FFCDD2</color>
     <color name="estado_gano">#C8E6C9</color>
+
+    <!-- Colores adicionales para tema oscuro -->
+    <color name="dark_bg">#121212</color>
+    <color name="dark_surface">#1E1E1E</color>
+    <color name="dark_text">#FFFFFF</color>
 </resources>
