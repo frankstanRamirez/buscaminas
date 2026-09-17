@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -19,10 +20,19 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-
+        
         appPreferences = new AppPreferences(this);
         themeManager = new ThemeManager(this, appPreferences);
+        
+        // Aplicar tema ANTES de setContentView
+        if (themeManager.isDarkTheme()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
 
         etPlayerName = findViewById(R.id.etPlayerName);
         swTheme = findViewById(R.id.swTheme);
@@ -47,18 +57,16 @@ public class SettingsActivity extends AppCompatActivity {
                 : AppPreferences.Theme.LIGHT;
             appPreferences.setTheme(newTheme);
             
-            // Aplicar tema inmediatamente
+            // Aplicar tema
             if (isChecked) {
-                // Tema oscuro
-                getWindow().setDecorFitsSystemWindows(true);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             } else {
-                // Tema claro
-                getWindow().setDecorFitsSystemWindows(true);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
             
             actualizarLabelTema();
             
-            // Recrear después de un pequeño delay para aplicar
+            // Recrear después
             new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
                 recreate();
             }, 300);
@@ -76,3 +84,4 @@ public class SettingsActivity extends AppCompatActivity {
         tvThemeLabel.setText("Tema: " + tema);
     }
 }
+
