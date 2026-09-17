@@ -195,7 +195,7 @@
                     android:layout_height="wrap_content"
                     android:text="Buscaminas v3.0\nJuego de estrategia y lógica\n\nClick: Revelar casilla\nClick largo: Marcar bandera"
                     android:textSize="12sp"
-                    android:textColor="@color/header_subtitle"
+                    android:textColor="@color/header_bg"
                     android:lineSpacingExtra="4dp"/>
 
             </LinearLayout>

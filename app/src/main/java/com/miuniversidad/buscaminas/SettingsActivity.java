@@ -46,8 +46,22 @@ public class SettingsActivity extends AppCompatActivity {
                 ? AppPreferences.Theme.DARK 
                 : AppPreferences.Theme.LIGHT;
             appPreferences.setTheme(newTheme);
+            
+            // Aplicar tema inmediatamente
+            if (isChecked) {
+                // Tema oscuro
+                getWindow().setDecorFitsSystemWindows(true);
+            } else {
+                // Tema claro
+                getWindow().setDecorFitsSystemWindows(true);
+            }
+            
             actualizarLabelTema();
-            recreate(); // Recrear activity para aplicar tema
+            
+            // Recrear después de un pequeño delay para aplicar
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                recreate();
+            }, 300);
         });
 
         swSound.setOnCheckedChangeListener((buttonView, isChecked) -> {
