@@ -5,6 +5,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -14,6 +16,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Switch swTheme;
     private Switch swSound;
     private TextView tvThemeLabel;
+    private Spinner spinnerDificultad;
     private AppPreferences appPreferences;
     private ThemeManager themeManager;
 
@@ -38,11 +41,22 @@ public class SettingsActivity extends AppCompatActivity {
         swTheme = findViewById(R.id.swTheme);
         swSound = findViewById(R.id.swSound);
         tvThemeLabel = findViewById(R.id.tvThemeLabel);
+        spinnerDificultad = findViewById(R.id.spinnerDificultad);
 
         // Cargar valores actuales
         etPlayerName.setText(appPreferences.getPlayerName());
         swTheme.setChecked(themeManager.isDarkTheme());
         swSound.setChecked(appPreferences.isSoundEnabled());
+        
+        // Configurar spinner de dificultad
+        String[] dificultades = {"Fácil (8x8, 10 minas)", "Medio (10x10, 30 minas)", "Difícil (12x12, 60 minas)"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dificultades);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDificultad.setAdapter(adapter);
+        
+        // Seleccionar dificultad actual
+        GameDifficulty currentDiff = appPreferences.getDifficulty();
+        spinnerDificultad.setSelection(currentDiff.ordinal());
 
         // Listeners
         etPlayerName.setOnFocusChangeListener((v, hasFocus) -> {
@@ -74,6 +88,17 @@ public class SettingsActivity extends AppCompatActivity {
 
         swSound.setOnCheckedChangeListener((buttonView, isChecked) -> {
             appPreferences.setSoundEnabled(isChecked);
+        });
+
+        spinnerDificultad.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) {
+                GameDifficulty[] diffs = GameDifficulty.values();
+                appPreferences.setDifficulty(diffs[position]);
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
         });
 
         actualizarLabelTema();

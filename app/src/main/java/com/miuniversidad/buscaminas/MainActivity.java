@@ -13,9 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int FILAS = 8;
-    private static final int COLUMNAS = 8;
-    private static final int TOTAL_MINAS = 10;
     private static final int TAMANO_BOTON_DP = 44;
 
     private GridLayout gridTablero;
@@ -27,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean juegoTerminado;
     private long tiempoInicio;
     private long tiempoElapsado;
+    
+    private int FILAS = 8;
+    private int COLUMNAS = 8;
+    private int TOTAL_MINAS = 10;
 
     private DataManager dataManager;
     private AchievementManager achievementManager;
@@ -122,6 +123,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void iniciarJuego() {
+        // Obtener dificultad desde preferencias
+        currentDifficulty = appPreferences.getDifficulty();
+        FILAS = currentDifficulty.filas;
+        COLUMNAS = currentDifficulty.columnas;
+        TOTAL_MINAS = currentDifficulty.minas;
+        
         tablero = new Tablero(FILAS, COLUMNAS, TOTAL_MINAS);
         botones = new Button[FILAS][COLUMNAS];
         scoreSystem = new ScoreSystem();
