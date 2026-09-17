@@ -53,25 +53,31 @@ public class MainActivity extends AppCompatActivity {
         Button btnLeaderboard = findViewById(R.id.btnLeaderboard);
         Button btnConfiguracion = findViewById(R.id.btnConfiguracion);
 
-        // Inicializar managers
-        dataManager = new DataManager(this);
-        appPreferences = new AppPreferences(this);
-        soundManager = new SoundManager(this);
-        achievementManager = new AchievementManager(dataManager);
-        gameStatistics = dataManager.loadStatistics();
-        leaderboard = dataManager.loadLeaderboard();
-        currentDifficulty = appPreferences.getDifficulty();
+        try {
+            // Inicializar managers
+            dataManager = new DataManager(this);
+            appPreferences = new AppPreferences(this);
+            soundManager = new SoundManager(this);
+            achievementManager = new AchievementManager(dataManager);
+            gameStatistics = dataManager.loadStatistics();
+            leaderboard = dataManager.loadLeaderboard();
+            currentDifficulty = appPreferences.getDifficulty();
 
-        btnReiniciar.setOnClickListener(v -> iniciarJuego());
-        btnLogros.setOnClickListener(v -> abrirLogros());
-        btnEstadisticas.setOnClickListener(v -> abrirEstadisticas());
-        btnLeaderboard.setOnClickListener(v -> abrirLeaderboard());
-        btnConfiguracion.setOnClickListener(v -> abrirConfiguracion());
+            btnReiniciar.setOnClickListener(v -> iniciarJuego());
+            btnLogros.setOnClickListener(v -> abrirLogros());
+            btnEstadisticas.setOnClickListener(v -> abrirEstadisticas());
+            btnLeaderboard.setOnClickListener(v -> abrirLeaderboard());
+            btnConfiguracion.setOnClickListener(v -> abrirConfiguracion());
 
-        // Verificar si hay partida guardada
-        if (dataManager.hasSavedGame()) {
-            mostrarDialogoCargarPartida();
-        } else {
+            // Verificar si hay partida guardada
+            if (dataManager.hasSavedGame()) {
+                mostrarDialogoCargarPartida();
+            } else {
+                iniciarJuego();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Si hay error, simplemente iniciar nuevo juego
             iniciarJuego();
         }
     }
@@ -86,24 +92,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void cargarPartida() {
-        GameState savedState = dataManager.loadGameState();
-        if (savedState != null) {
-            // Restaurar tablero desde estado guardado
-            tablero = new Tablero(savedState.getFilas(), savedState.getColumnas(), savedState.getTotalMinas());
-            restaurarEstadoTablero(savedState);
-            
-            tiempoElapsado = savedState.getTiempoElapsado();
-            juegoTerminado = savedState.isJuegoTerminado();
-            
-            // Crear UI
-            botones = new Button[FILAS][COLUMNAS];
-            crearBotones(dpAPx(TAMANO_BOTON_DP), 0);
-            
-            // Actualizar vista
-            actualizarTableroVisual();
-            tvEstado.setText("En juego");
-            cronometro.setBase(SystemClock.elapsedRealtime() - tiempoElapsado);
-            cronometro.start();
+        try {
+            GameState savedState = dataManager.loadGameState();
+            if (savedState != null) {
+                // Restaurar tablero desde estado guardado
+                tablero = new Tablero(savedState.getFilas(), savedState.getColumnas(), savedState.getTotalMinas());
+                restaurarEstadoTablero(savedState);
+                
+                tiempoElapsado = savedState.getTiempoElapsado();
+                juegoTerminado = savedState.isJuegoTerminado();
+                
+                // Crear UI
+                botones = new Button[FILAS][COLUMNAS];
+                crearBotones(dpAPx(TAMANO_BOTON_DP), 0);
+                
+                // Actualizar vista
+                actualizarTableroVisual();
+                tvEstado.setText("En juego");
+                cronometro.setBase(SystemClock.elapsedRealtime() - tiempoElapsado);
+                cronometro.start();
+            } else {
+                iniciarJuego();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            iniciarJuego();
         }
     }
 
