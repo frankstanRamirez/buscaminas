@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Aplicar tema ANTES de setContentView
+        appPreferences = new AppPreferences(this);
+        aplicarTema();
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -56,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             // Inicializar managers
             dataManager = new DataManager(this);
-            appPreferences = new AppPreferences(this);
             soundManager = new SoundManager(this);
             achievementManager = new AchievementManager(dataManager);
             gameStatistics = dataManager.loadStatistics();
@@ -446,6 +449,15 @@ public class MainActivity extends AppCompatActivity {
     private int dpAPx(int dp) {
         float density = getResources().getDisplayMetrics().density;
         return Math.round(dp * density);
+    }
+
+    private void aplicarTema() {
+        AppPreferences.Theme tema = appPreferences.getTheme();
+        if (tema == AppPreferences.Theme.DARK) {
+            setTheme(R.style.AppTheme_Dark);
+        } else {
+            setTheme(R.style.AppTheme);
+        }
     }
 
     @Override

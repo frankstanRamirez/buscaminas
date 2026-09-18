@@ -12,25 +12,35 @@ public class SettingsActivity extends AppCompatActivity {
 
     private EditText etPlayerName;
     private Spinner spinnerDificultad;
+    private Switch swTheme;
     private Switch swSound;
+    private TextView tvThemeLabel;
     private TextView tvSoundLabel;
     private AppPreferences appPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Aplicar tema ANTES de setContentView
+        appPreferences = new AppPreferences(this);
+        aplicarTema();
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        appPreferences = new AppPreferences(this);
-
         etPlayerName = findViewById(R.id.etPlayerName);
         spinnerDificultad = findViewById(R.id.spinnerDificultad);
+        swTheme = findViewById(R.id.swTheme);
         swSound = findViewById(R.id.swSound);
+        tvThemeLabel = findViewById(R.id.tvThemeLabel);
         tvSoundLabel = findViewById(R.id.tvSoundLabel);
 
         // Cargar valores actuales
         etPlayerName.setText(appPreferences.getPlayerName());
         swSound.setChecked(appPreferences.isSoundEnabled());
+        
+        // Cargar tema actual (true = oscuro, false = claro)
+        boolean isDarkTheme = appPreferences.getTheme() == AppPreferences.Theme.DARK;
+        swTheme.setChecked(isDarkTheme);
 
         // Configurar spinner de dificultad
         String[] dificultades = {"Fácil (8x8, 10 minas)", "Medio (10x10, 30 minas)", "Difícil (12x12, 60 minas)"};
@@ -63,16 +73,41 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        swTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            AppPreferences.Theme nuevoTema = isChecked ? AppPreferences.Theme.DARK : AppPreferences.Theme.LIGHT;
+            appPreferences.setTheme(nuevoTema);
+            actualizarLabelTema();
+            
+            // Reiniciar actividad para aplicar tema
+            recreate();
+        });
+
         swSound.setOnCheckedChangeListener((buttonView, isChecked) -> {
             appPreferences.setSoundEnabled(isChecked);
             actualizarLabelSonido();
         });
 
+        actualizarLabelTema();
         actualizarLabelSonido();
+    }
+
+    private void actualizarLabelTema() {
+        AppPreferences.Theme tema = appPreferences.getTheme();
+        String label = (tema == AppPreferences.Theme.DARK) ? "🌙 Tema: Oscuro" : "☀️ Tema: Claro";
+        tvThemeLabel.setText(label);
     }
 
     private void actualizarLabelSonido() {
         String sonido = appPreferences.isSoundEnabled() ? "🔊 Activado" : "🔇 Desactivado";
         tvSoundLabel.setText("Sonidos: " + sonido);
+    }
+
+    private void aplicarTema() {
+        AppPreferences.Theme tema = appPreferences.getTheme();
+        if (tema == AppPreferences.Theme.DARK) {
+            setTheme(R.style.AppTheme_Dark);
+        } else {
+            setTheme(R.style.AppTheme);
+        }
     }
 }

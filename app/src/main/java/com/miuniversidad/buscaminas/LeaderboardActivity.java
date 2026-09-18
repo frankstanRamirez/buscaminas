@@ -15,6 +15,10 @@ public class LeaderboardActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Aplicar tema ANTES de setContentView
+        AppPreferences appPreferences = new AppPreferences(this);
+        aplicarTema(appPreferences);
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
 
@@ -25,6 +29,15 @@ public class LeaderboardActivity extends AppCompatActivity {
         leaderboard = dataManager.loadLeaderboard();
 
         mostrarLeaderboard();
+    }
+
+    private void aplicarTema(AppPreferences appPreferences) {
+        AppPreferences.Theme tema = appPreferences.getTheme();
+        if (tema == AppPreferences.Theme.DARK) {
+            setTheme(R.style.AppTheme_Dark);
+        } else {
+            setTheme(R.style.AppTheme);
+        }
     }
 
     private void mostrarLeaderboard() {

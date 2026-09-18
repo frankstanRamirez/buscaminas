@@ -15,6 +15,10 @@ public class AchievementsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Aplicar tema ANTES de setContentView
+        AppPreferences appPreferences = new AppPreferences(this);
+        aplicarTema(appPreferences);
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievements);
 
@@ -25,6 +29,15 @@ public class AchievementsActivity extends AppCompatActivity {
         achievementManager = new AchievementManager(dataManager);
 
         mostrarLogros();
+    }
+
+    private void aplicarTema(AppPreferences appPreferences) {
+        AppPreferences.Theme tema = appPreferences.getTheme();
+        if (tema == AppPreferences.Theme.DARK) {
+            setTheme(R.style.AppTheme_Dark);
+        } else {
+            setTheme(R.style.AppTheme);
+        }
     }
 
     private void mostrarLogros() {
