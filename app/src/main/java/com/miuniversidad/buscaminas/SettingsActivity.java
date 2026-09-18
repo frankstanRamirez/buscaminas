@@ -2,61 +2,47 @@ package com.miuniversidad.buscaminas;
 
 import android.os.Bundle;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
+import android.widget.Switch;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private EditText etPlayerName;
-    private Switch swTheme;
-    private Switch swSound;
-    private TextView tvThemeLabel;
     private Spinner spinnerDificultad;
+    private Switch swSound;
+    private TextView tvSoundLabel;
     private AppPreferences appPreferences;
-    private ThemeManager themeManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        appPreferences = new AppPreferences(this);
-        themeManager = new ThemeManager(this, appPreferences);
-        
-        // Aplicar tema ANTES de setContentView
-        if (themeManager.isDarkTheme()) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-        
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        appPreferences = new AppPreferences(this);
+
         etPlayerName = findViewById(R.id.etPlayerName);
-        swTheme = findViewById(R.id.swTheme);
-        swSound = findViewById(R.id.swSound);
-        tvThemeLabel = findViewById(R.id.tvThemeLabel);
         spinnerDificultad = findViewById(R.id.spinnerDificultad);
+        swSound = findViewById(R.id.swSound);
+        tvSoundLabel = findViewById(R.id.tvSoundLabel);
 
         // Cargar valores actuales
         etPlayerName.setText(appPreferences.getPlayerName());
-        swTheme.setChecked(themeManager.isDarkTheme());
         swSound.setChecked(appPreferences.isSoundEnabled());
-        
+
         // Configurar spinner de dificultad
         String[] dificultades = {"Fácil (8x8, 10 minas)", "Medio (10x10, 30 minas)", "Difícil (12x12, 60 minas)"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dificultades);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, dificultades);
         spinnerDificultad.setAdapter(adapter);
         
-        // Seleccionar dificultad actual
+        // Seleccionar la dificultad actual
         GameDifficulty currentDiff = appPreferences.getDifficulty();
-        spinnerDificultad.setSelection(currentDiff.ordinal());
+        int diffIndex = 0;
+        if (currentDiff == GameDifficulty.MEDIUM) diffIndex = 1;
+        else if (currentDiff == GameDifficulty.HARD) diffIndex = 2;
+        spinnerDificultad.setSelection(diffIndex);
 
         // Listeners
         etPlayerName.setOnFocusChangeListener((v, hasFocus) -> {
@@ -65,48 +51,28 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        swTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            AppPreferences.Theme newTheme = isChecked 
-                ? AppPreferences.Theme.DARK 
-                : AppPreferences.Theme.LIGHT;
-            appPreferences.setTheme(newTheme);
-            
-            // Aplicar tema
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        spinnerDificultad.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) {
+                GameDifficulty[] dificultades = {GameDifficulty.EASY, GameDifficulty.MEDIUM, GameDifficulty.HARD};
+                appPreferences.setDifficulty(dificultades[position]);
             }
-            
-            actualizarLabelTema();
-            
-            // Recrear después
-            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-                recreate();
-            }, 300);
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+            }
         });
 
         swSound.setOnCheckedChangeListener((buttonView, isChecked) -> {
             appPreferences.setSoundEnabled(isChecked);
+            actualizarLabelSonido();
         });
 
-        spinnerDificultad.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) {
-                GameDifficulty[] diffs = GameDifficulty.values();
-                appPreferences.setDifficulty(diffs[position]);
-            }
-
-            @Override
-            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
-        });
-
-        actualizarLabelTema();
+        actualizarLabelSonido();
     }
 
-    private void actualizarLabelTema() {
-        String tema = themeManager.isDarkTheme() ? "🌙 Oscuro" : "☀️ Claro";
-        tvThemeLabel.setText("Tema: " + tema);
+    private void actualizarLabelSonido() {
+        String sonido = appPreferences.isSoundEnabled() ? "🔊 Activado" : "🔇 Desactivado";
+        tvSoundLabel.setText("Sonidos: " + sonido);
     }
 }
-
