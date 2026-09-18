@@ -43,4 +43,7 @@
     <color name="dark_bg">#121212</color>
     <color name="dark_surface">#1E1E1E</color>
     <color name="dark_text">#FFFFFF</color>
+    
+    <!-- Alias para header_bg - texto visible -->
+    <color name="header_bg_text">#2196F3</color>
 </resources>
