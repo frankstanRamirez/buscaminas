@@ -10,6 +10,7 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,11 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Aplicar tema ANTES de setContentView
-        appPreferences = new AppPreferences(this);
-        aplicarTema();
-        
         super.onCreate(savedInstanceState);
+        
+        // Aplicar tema DESPUÉS de super.onCreate() pero ANTES de setContentView
+        appPreferences = new AppPreferences(this);
+        aplicarTemaCorrectamente();
+        
         setContentView(R.layout.activity_main);
 
         gridTablero = findViewById(R.id.gridTablero);
@@ -451,13 +453,20 @@ public class MainActivity extends AppCompatActivity {
         return Math.round(dp * density);
     }
 
-    private void aplicarTema() {
+    private void aplicarTemaCorrectamente() {
         AppPreferences.Theme tema = appPreferences.getTheme();
+        int modoNocturno;
+        
         if (tema == AppPreferences.Theme.DARK) {
-            setTheme(R.style.AppTheme_Dark);
+            modoNocturno = AppCompatDelegate.MODE_NIGHT_YES;
+        } else if (tema == AppPreferences.Theme.LIGHT) {
+            modoNocturno = AppCompatDelegate.MODE_NIGHT_NO;
         } else {
-            setTheme(R.style.AppTheme);
+            modoNocturno = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
         }
+        
+        // Aplicar el modo nocturno
+        AppCompatDelegate.setDefaultNightMode(modoNocturno);
     }
 
     @Override

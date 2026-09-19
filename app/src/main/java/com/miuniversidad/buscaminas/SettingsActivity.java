@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -20,11 +21,12 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
         // Aplicar tema ANTES de setContentView
         appPreferences = new AppPreferences(this);
-        aplicarTema();
+        aplicarTemaCorrectamente();
         
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
         etPlayerName = findViewById(R.id.etPlayerName);
@@ -100,6 +102,21 @@ public class SettingsActivity extends AppCompatActivity {
     private void actualizarLabelSonido() {
         String sonido = appPreferences.isSoundEnabled() ? "🔊 Activado" : "🔇 Desactivado";
         tvSoundLabel.setText("Sonidos: " + sonido);
+    }
+
+    private void aplicarTemaCorrectamente() {
+        AppPreferences.Theme tema = appPreferences.getTheme();
+        int modoNocturno;
+        
+        if (tema == AppPreferences.Theme.DARK) {
+            modoNocturno = AppCompatDelegate.MODE_NIGHT_YES;
+        } else if (tema == AppPreferences.Theme.LIGHT) {
+            modoNocturno = AppCompatDelegate.MODE_NIGHT_NO;
+        } else {
+            modoNocturno = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+        }
+        
+        AppCompatDelegate.setDefaultNightMode(modoNocturno);
     }
 
     private void aplicarTema() {

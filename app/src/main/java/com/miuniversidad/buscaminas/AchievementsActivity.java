@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import java.util.Map;
 
 public class AchievementsActivity extends AppCompatActivity {
@@ -15,11 +16,12 @@ public class AchievementsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Aplicar tema ANTES de setContentView
-        AppPreferences appPreferences = new AppPreferences(this);
-        aplicarTema(appPreferences);
-        
         super.onCreate(savedInstanceState);
+        
+        // Aplicar tema
+        AppPreferences appPreferences = new AppPreferences(this);
+        aplicarTemaCorrectamente(appPreferences);
+        
         setContentView(R.layout.activity_achievements);
 
         containerLogros = findViewById(R.id.containerLogros);
@@ -31,13 +33,19 @@ public class AchievementsActivity extends AppCompatActivity {
         mostrarLogros();
     }
 
-    private void aplicarTema(AppPreferences appPreferences) {
+    private void aplicarTemaCorrectamente(AppPreferences appPreferences) {
         AppPreferences.Theme tema = appPreferences.getTheme();
+        int modoNocturno;
+        
         if (tema == AppPreferences.Theme.DARK) {
-            setTheme(R.style.AppTheme_Dark);
+            modoNocturno = AppCompatDelegate.MODE_NIGHT_YES;
+        } else if (tema == AppPreferences.Theme.LIGHT) {
+            modoNocturno = AppCompatDelegate.MODE_NIGHT_NO;
         } else {
-            setTheme(R.style.AppTheme);
+            modoNocturno = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
         }
+        
+        AppCompatDelegate.setDefaultNightMode(modoNocturno);
     }
 
     private void mostrarLogros() {
