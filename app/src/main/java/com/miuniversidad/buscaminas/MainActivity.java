@@ -240,8 +240,13 @@ public class MainActivity extends AppCompatActivity {
             // Registrar derrota
             gameStatistics.registrarDerrota(tiempoElapsado);
             dataManager.saveStatistics(gameStatistics);
-            achievementManager.checkAchievementsForGameEnd(false, tiempoElapsado, 
-                gameStatistics.getTotalPartidas(), gameStatistics.getPartidosGanadas(), gameStatistics);
+            
+            try {
+                achievementManager.checkAchievementsForGameEnd(false, tiempoElapsado, 
+                    gameStatistics.getTotalPartidas(), gameStatistics.getPartidosGanadas(), gameStatistics);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             
             // Limpiar partida guardada
             dataManager.clearSavedGame();
@@ -284,8 +289,12 @@ public class MainActivity extends AppCompatActivity {
                 leaderboard.addEntry(playerName, tiempoElapsado, currentDifficulty, finalScore);
                 dataManager.saveLeaderboard(leaderboard);
                 
-                achievementManager.checkAchievementsForGameEnd(true, tiempoElapsado, 
-                    gameStatistics.getTotalPartidas(), gameStatistics.getPartidosGanadas(), gameStatistics);
+                try {
+                    achievementManager.checkAchievementsForGameEnd(true, tiempoElapsado, 
+                        gameStatistics.getTotalPartidas(), gameStatistics.getPartidosGanadas(), gameStatistics);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 
                 // Limpiar partida guardada
                 dataManager.clearSavedGame();
